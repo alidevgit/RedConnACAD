@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Autodesk.AutoCAD.Geometry;
+using Autodesk.AutoCAD.Runtime;
 using RedConn;
-using RedEquation.Classes.Enums;
+using RedEquation.Stark.Enums;
 
-namespace RedEquation.Helpers
+namespace RedEquation.AutoCad.Helpers
 {
-    internal static class RemoteObjectHelper
+    internal static class ObjectHelper
     {
         internal static Point3d CreatePoint3DFromRemoteObjectPoint(RemoteObj remoteObject)
         {
@@ -31,5 +32,12 @@ namespace RedEquation.Helpers
             }
             return points;
         }
+
+        internal static readonly Dictionary<String, ObjectType> DefaultTranslationPrimitiveAutoCadObjectTypeToStarkObjectTypeDictionary = new Dictionary<String, ObjectType>()
+        {
+            {"DBPoint", ObjectType.Point},
+            {"Line", ObjectType.Line},
+            {"Circle", ObjectType.Circle}
+        };
     }
 }

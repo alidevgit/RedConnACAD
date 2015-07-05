@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
-using RedEquation.Classes.Enums;
+﻿using System;
+using System.Collections.Generic;
+using Autodesk.AutoCAD.DatabaseServices;
+using RedEquation.Stark.Enums;
 
-namespace RedEquation.Helpers
+namespace RedEquation.Stark.Helpers
 {
-    public static class ObjectsHelper
+    public static class ObjectHelper
     {
         //Dictionary with defining allowable types for all Object Type (Key - ParentObjectType, Value - Types that can be stored in)
         private static readonly Dictionary<ObjectType, List<ObjectType>> AllowableObjectTypeDictionary = new Dictionary<ObjectType, List<ObjectType>>()
@@ -39,6 +41,38 @@ namespace RedEquation.Helpers
         internal static List<ObjectType> GetAllowedTypes(ObjectType parentObjectType)
         {
             return !AllowableObjectTypeDictionary.ContainsKey(parentObjectType) ? null : AllowableObjectTypeDictionary[parentObjectType];
+        }
+
+        internal static ObjectType? GetObjectTypeByObjectTypeString(String objectTypeString)
+        {
+            ObjectType objectType;
+            if (Enum.TryParse(objectTypeString, true, out objectType))
+                return objectType;
+            return null;
+        }
+
+        public static void CreateSpecificStarkObjectByAutoCadPoint(ObjectType starkObjectType, DBObject autocadObject)
+        {
+            if (starkObjectType == ObjectType.Point)
+                PointHelper.AddPointObjectToCurrentObjectByAutoCadDbPoint(autocadObject);
+        }
+
+        public static void CreateSpecificStarkObjectByAutoCadLine(ObjectType starkObjectType, DBObject autocadObject)
+        {
+            if (starkObjectType == ObjectType.Line)
+                LineHelper.AddLineObjectToCurrentObjectByAutoCadLine(autocadObject);
+        }
+
+        public static void CreateSpecificStarkObjectByAutoCadCircle(ObjectType starkObjectType, DBObject autocadObject)
+        {
+            if (starkObjectType == ObjectType.Circle)
+                CircleHelper.AddCircleObjectToCurrentObjectByAutoCadCircle(autocadObject);
+        }
+
+        public static void CreateSpecificStarkObjectByAutoCadPolyline(ObjectType starkObjectType, DBObject autocadObject)
+        {
+            if (starkObjectType == ObjectType.Surface)
+                SurfaceHelper.AddSurfaceObjectToCurrentObjectByAutoPolyline(autocadObject);
         }
     }
 }

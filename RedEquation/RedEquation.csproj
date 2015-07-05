@@ -107,23 +107,29 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Enums\ObjectType.cs" />
-    <Compile Include="Classes\Enums\ParameterDisplayRole.cs" />
-    <Compile Include="Classes\Enums\ParameterDisplayWidth.cs" />
-    <Compile Include="Classes\Enums\ParameterType.cs" />
-    <Compile Include="Classes\Enums\ParameterUnitType.cs" />
-    <Compile Include="Controls\ProjectExplorerControl.xaml.cs">
+    <Compile Include="AutoCad\Helpers\DatabaseHelper.cs" />
+    <Compile Include="AutoCad\Helpers\ObjectHelper.cs" />
+    <Compile Include="AutoCad\Wrappers\ObjectWrapper.cs" />
+    <Compile Include="AutoCad\Wrappers\PointWarapper.cs" />
+    <Compile Include="AutoCad\Wrappers\SurfaceWrapper.cs" />
+    <Compile Include="Common\Controls\ProjectExplorerControl.xaml.cs">
       <DependentUpon>ProjectExplorerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EnumerationExtension.cs" />
-    <Compile Include="Helpers\ObjectDrawer.cs" />
-    <Compile Include="Helpers\ObjectsHelper.cs" />
-    <Compile Include="Helpers\RemoteObjectHelper.cs" />
+    <Compile Include="Common\Helpers\EnumerationExtension.cs" />
+    <Compile Include="Common\Helpers\DialogMessagesHelper.cs" />
+    <Compile Include="Common\Helpers\ObjectDrawer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Classes\Object.cs" />
-    <Compile Include="Classes\Point.cs" />
-    <Compile Include="Classes\Surface.cs" />
+    <Compile Include="Stark\Enums\ObjectType.cs" />
+    <Compile Include="Stark\Enums\ParameterDisplayRole.cs" />
+    <Compile Include="Stark\Enums\ParameterDisplayWidth.cs" />
+    <Compile Include="Stark\Enums\ParameterType.cs" />
+    <Compile Include="Stark\Enums\ParameterUnitType.cs" />
+    <Compile Include="Stark\Helpers\CircleHelper.cs" />
+    <Compile Include="Stark\Helpers\LineHelper.cs" />
+    <Compile Include="Stark\Helpers\ObjectHelper.cs" />
+    <Compile Include="Stark\Helpers\PointHelper.cs" />
+    <Compile Include="Stark\Helpers\SurfaceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -148,14 +154,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ProjectExplorerControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Common\Controls\ProjectExplorerControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

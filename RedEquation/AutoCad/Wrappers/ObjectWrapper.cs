@@ -1,9 +1,9 @@
 ﻿using Autodesk.AutoCAD.DatabaseServices;
 using RedConn;
 
-namespace RedEquation.Classes
+namespace RedEquation.AutoCad.Wrappers
 {
-    internal abstract class Object
+    internal abstract class ObjectWrapper
     {
         internal abstract Entity CreateEntityToDrawing(RemoteObj remoteObject);
     }

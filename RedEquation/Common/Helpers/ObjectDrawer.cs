@@ -4,12 +4,12 @@ using AutoCADHelper;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.DatabaseServices;
 using RedConn;
-using RedEquation.Classes;
-using RedEquation.Classes.Enums;
+using RedEquation.AutoCad.Wrappers;
+using RedEquation.Stark.Enums;
 using Application = Autodesk.AutoCAD.ApplicationServices.Core.Application;
-using Surface = RedEquation.Classes.Surface;
+using Surface = RedEquation.AutoCad.Wrappers.SurfaceWrapper;
 
-namespace RedEquation.Helpers
+namespace RedEquation.Common.Helpers
 {
     internal static class ObjectDrawer
     {
@@ -32,7 +32,7 @@ namespace RedEquation.Helpers
                     if (String.IsNullOrEmpty(currentRemoteObjectId)) continue;
                     if (currentObjectType == ObjectType.Point)
                     {
-                        DrawAndRegisterEntity(new Point().CreateEntityToDrawing(currentRemoteObject), currentRemoteObjectId, dictionaryOfIdsMatching);
+                        DrawAndRegisterEntity(new PointWrapper().CreateEntityToDrawing(currentRemoteObject), currentRemoteObjectId, dictionaryOfIdsMatching);
                     }
                     else if (currentObjectType == ObjectType.Surface)
                     {

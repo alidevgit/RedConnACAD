@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace RedEquation.Classes.Enums
+namespace RedEquation.Stark.Enums
 {
     public enum ParameterDisplayRole
     {

@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using System.Windows.Input;
-using System.Windows.Media;
 using RedConn;
-using RedEquation.Classes;
-using RedEquation.Classes.Enums;
-using RedEquation.Helpers;
+using RedEquation.Common.Helpers;
+using RedEquation.Stark.Enums;
+using RedEquation.Stark.Helpers;
+using ComboBox = System.Windows.Controls.ComboBox;
 using MessageBox = System.Windows.MessageBox;
-using Object = System.Object;
 using TreeView = System.Windows.Forms.TreeView;
 using UserControl = System.Windows.Controls.UserControl;
 
-namespace RedEquation.Controls
+namespace RedEquation.Common.Controls
 {
     public partial class ProjectExplorerControl : UserControl
     {
@@ -237,10 +234,9 @@ namespace RedEquation.Controls
 
         private Boolean CheckIfObjectCanContainAnotherObject(RemoteObj currentObject)
         {
-            ObjectType objectType;
-            if (!Enum.TryParse(currentObject.GetType(), true, out objectType))
-                return false;
-            if (ObjectsHelper.GetAllowedTypes(objectType) == null)
+            ObjectType? objectType = ObjectHelper.GetObjectTypeByObjectTypeString(currentObject.GetType());
+            if (objectType == null) return false;
+            if (ObjectHelper.GetAllowedTypes(objectType.Value) == null)
                 return false;
             return true;
         }
@@ -347,8 +343,7 @@ namespace RedEquation.Controls
 
         internal Boolean DeleteObject(String currentObjectId)
         {
-            if (MessageBox.Show(String.Format("Are you sure you want to delete {0} object?", _currentObject.GetName()), "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
-                MessageBoxResult.Yes)
+            if (DialogMessagesHelper.DeleteConfirmationDialog(String.Format("Are you sure you want to delete {0} object?", _currentObject.GetName())) == MessageBoxResult.Yes)
             {
                 _remoteConnection.DeleteObject(currentObjectId);
                 TreeNode currentObjectNode = GetNodeByObjectId(currentObjectId);
@@ -377,12 +372,12 @@ namespace RedEquation.Controls
 
         private void FillObjectCreatingPanel()
         {
-            ObjectType parentType = (ObjectType) Enum.Parse(typeof (ObjectType), _currentObject.GetType());
+            ObjectType? parentType = ObjectHelper.GetObjectTypeByObjectTypeString(_currentObject.GetType());
             NewObjectParentTypeComboBox.SelectedValue = parentType;
 
             ClearComboBox(NewObjectTypeComboBox);
             var typesItems = new ObservableCollection<Object>();
-            foreach (var currentType in ObjectsHelper.GetAllowedTypes(parentType))
+            foreach (var currentType in ObjectHelper.GetAllowedTypes(parentType.Value))
             {
                 typesItems.Add(currentType);
             }
@@ -492,8 +487,7 @@ namespace RedEquation.Controls
 
         private void DeleteCurrentParameter()
         {
-            if (MessageBox.Show(String.Format("Are you sure you want to delete {0} parameter?", _currentParameter.Name), "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
-                 MessageBoxResult.Yes)
+            if (DialogMessagesHelper.DeleteConfirmationDialog(String.Format("Are you sure you want to delete {0} parameter?", _currentParameter.Name)) == MessageBoxResult.Yes)
             {
                 var parentObject = _currentParameter.Parent;
                 _remoteConnection.DeleteParam(parentObject.GetID(), _currentParameter.Name);
@@ -501,6 +495,8 @@ namespace RedEquation.Controls
                 RefreshObjectBrowserTreeView();
             }
         }
+
+
 
         private void ApplyChangeToParameter()
         {
@@ -568,7 +564,7 @@ namespace RedEquation.Controls
 
         #region Common Control Helpers Methods
 
-        private void ClearComboBox(System.Windows.Controls.ComboBox comboBox)
+        private void ClearComboBox(ComboBox comboBox)
         {
             comboBox.ItemsSource = null;
             comboBox.SelectedValue = null;
@@ -635,7 +631,7 @@ namespace RedEquation.Controls
             ProjectPanel.IsEnabled = true;
             ObjectBrowserPanel.IsEnabled = true;
             UpdateDataButton.IsEnabled = true;
-            ParameterPropertiesPanel.IsEnabled = true;
+            ParameterPropertiesPanel.IsEnabled = false;
             SetObjectPropertiesPanelToEditingView();
             ClearObjectCreatingPanelFields();
         }
@@ -652,11 +648,6 @@ namespace RedEquation.Controls
             CheckIfUserIsAuthorized();
             FillProjectsComboBox();
             HideLoadingProcess();
-        }
-
-        private void ShowNotImplementedYetMessage()
-        {
-            MessageBox.Show("Not Implemented Yet!");
         }
 
         private void CheckIfUserIsAuthorized()
